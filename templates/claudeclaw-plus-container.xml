@@ -1,0 +1,141 @@
+<Container>
+  <Name>claudeclaw-plus</Name>
+  <Repository>ghcr.io/paulmeier/claudeclaw-plus-container:latest</Repository>
+  <Registry>https://github.com/paulmeier/claudeclaw-plus-container/pkgs/container/claudeclaw-plus-container</Registry>
+  <Network>bridge</Network>
+  <Privileged>false</Privileged>
+  <Shell>sh</Shell>
+  <ExtraParams>--restart=unless-stopped</ExtraParams>
+
+  <Support>https://github.com/paulmeier/claudeclaw-plus-container-unraid/issues</Support>
+  <Project>https://github.com/paulmeier/claudeclaw-plus-container</Project>
+
+  <Category>AI:</Category>
+
+  <Icon>https://raw.githubusercontent.com/paulmeier/claudeclaw-plus-container-unraid/main/icons/claudeclaw-plus-container.png</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/paulmeier/claudeclaw-plus-container-unraid/main/templates/claudeclaw-plus-container.xml</TemplateURL>
+
+  <WebUI>http://[IP]:[PORT:4632]</WebUI>
+
+  <Overview>ClaudeClaw+ is a superset of claudeclaw that adds a governance and policy layer, durable multi-step orchestration, persistent cross-session memory, and a hardened web UI on top of the upstream daemon. Everything in vanilla claudeclaw is here too — Telegram, Discord, and Slack bridges, scheduled cron jobs, voice transcription via Whisper, and a web dashboard. Requires a Claude Code subscription at claude.ai/code — no API key needed.</Overview>
+
+  <Requires>A Claude Code subscription (claude.ai/code) is required. After starting the container for the first time, open a terminal to it and run: claude login</Requires>
+
+  <ExtraSearchTerms>claude ai assistant llm telegram discord slack whisper voice cron jobs automation governance orchestration memory</ExtraSearchTerms>
+
+  <!-- PORT -->
+  <Config Name="Web Dashboard Port"
+          Target="4632"
+          Default="4632"
+          Mode="tcp"
+          Type="Port"
+          Display="always"
+          Required="true"
+          Description="Port for the ClaudeClaw+ web dashboard.">4632</Config>
+
+  <!-- ENV VARS -->
+  <Config Name="IS_SANDBOX"
+          Target="IS_SANDBOX"
+          Default="1"
+          Mode=""
+          Type="Variable"
+          Display="advanced"
+          Required="true"
+          Description="Tells Claude Code that this is a sandboxed environment, so it accepts --dangerously-skip-permissions when running as root. Required for ClaudeClaw+ to function inside this container. Do not unset.">1</Config>
+
+  <!-- REQUIRED DATA VOLUME -->
+  <Config Name="App Data"
+          Target="/root/.claude"
+          Default="/mnt/user/appdata/claudeclaw-plus"
+          Mode="rw"
+          Type="Path"
+          Display="always"
+          Required="true"
+          Description="Stores Claude Code credentials, ClaudeClaw+ settings, logs, jobs, persistent memory, and Whisper models. Must persist across restarts.">/mnt/user/appdata/claudeclaw-plus</Config>
+
+  <!-- OPTIONAL VOLUMES -->
+  <!-- These intentionally target paths under /root/ rather than /mnt/. ClaudeClaw+'s default
+       'moderate' security scope (inherited from upstream claudeclaw) restricts the daemon to its
+       project dir (/root), so mounts outside that path are invisible to it without lowering
+       security to 'unrestricted'. -->
+  <Config Name="Notes Directory"
+          Target="/root/notes"
+          Default=""
+          Mode="ro"
+          Type="Path"
+          Display="advanced"
+          Required="false"
+          Description="Optional host directory for ClaudeClaw+ to read. Mounted inside the container at /root/notes so it falls within the default 'moderate' security scope. Reference it in prompts and jobs as /root/notes.">
+  </Config>
+
+  <Config Name="Documents Directory"
+          Target="/root/documents"
+          Default=""
+          Mode="ro"
+          Type="Path"
+          Display="advanced"
+          Required="false"
+          Description="Optional host directory for ClaudeClaw+ to read. Mounted inside the container at /root/documents so it falls within the default 'moderate' security scope. Reference it in prompts and jobs as /root/documents.">
+  </Config>
+
+  <Config Name="Backup Directory"
+          Target="/backup"
+          Default=""
+          Mode="rw"
+          Type="Path"
+          Display="advanced"
+          Required="false"
+          Description="Optional host directory for backups. Run /backup.sh inside the container to create a timestamped snapshot of all ClaudeClaw+ data here.">
+  </Config>
+
+  <!-- TAILSCALE SUPPORT -->
+  <!-- Unraid's CA Tailscale integration cannot auto-detect a persistent state directory
+       for ClaudeClaw+ because /root/.claude is not one of the conventional paths it scans
+       (/config, /data, etc). Pre-declare the fallback so enabling Tailscale via the
+       Advanced UI works without the user having to fill in the State Directory by hand. -->
+  <Config Name="TailScale Fallback State Directory"
+          Target="CA_TS_FALLBACK_DIR"
+          Default="/root/.claude/tailscale"
+          Mode=""
+          Type="Variable"
+          Display="advanced-hide"
+          Required="false"
+          Description="Container directory where Unraid's CA Tailscale integration stores its state (machine key, node info). Kept under /root/.claude so it persists across container recreation and image updates. Only used when Tailscale is enabled via the Docker template's Advanced View.">/root/.claude/tailscale</Config>
+
+  <Description>
+    ClaudeClaw+ extends Claude Code into a personal AI assistant daemon that runs continuously in the background. It is a superset of upstream claudeclaw, syncing from it daily and adding a governance and policy layer, durable multi-step orchestration (DAG-style jobs that survive restarts), persistent cross-session memory, and a hardened web UI.
+
+    AUTHENTICATION — REQUIRED BEFORE USE:
+    ClaudeClaw+ uses your Claude Code subscription, not an API key. After starting the container for the first
+    time, open a terminal to the container in Unraid and run: claude login
+
+    This opens an OAuth browser flow. Complete it once and your credentials are saved to the app data directory.
+    They persist across container restarts.
+
+    CONFIGURATION:
+    On first start, a default settings.json is created at your app data path under claudeclaw/settings.json.
+    ClaudeClaw+ inherits the upstream settings schema, plus its own keys for governance, model routing,
+    orchestration, and persistent memory. See https://github.com/TerrysPOV/ClaudeClaw-Plus for the full
+    Plus-specific configuration reference.
+
+    MESSAGING SETUP:
+    Telegram — add your BotFather token and allowed user IDs to settings.json.
+    Discord — add your bot token, enable Message Content Intent in the developer portal, and add channel IDs.
+    Slack — add your xoxb- bot token and xapp- app-level token (Socket Mode required).
+    All messaging bridges use outbound connections only — no additional ports need to be opened.
+
+    ADDITIONAL DIRECTORIES:
+    Mount host directories under /root/ inside the container (e.g. /root/notes, /root/projects) so
+    they fall within ClaudeClaw+'s default 'moderate' security scope. Paths outside /root/ are
+    invisible to the daemon unless you set settings.json security.level to 'unrestricted'.
+    Use read-only mode for directories it should only read, read-write for those it can modify.
+
+    BACKUPS:
+    Mount a backup directory and run /backup.sh inside the container to create a timestamped snapshot.
+
+    RUNNING ALONGSIDE VANILLA claudeclaw:
+    Both containers can run side-by-side on the same Unraid box. The container name and default appdata path
+    (/mnt/user/appdata/claudeclaw-plus vs /mnt/user/appdata/claudeclaw) are distinct, and each gets its own
+    web dashboard. If you want them on the same port externally, change one of the Web Dashboard Port mappings.
+  </Description>
+</Container>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Maintainer>
+  <Icon>https://raw.githubusercontent.com/paulmeier/claudeclaw-plus-container-unraid/main/icons/claudeclaw-plus-container.png</Icon>
+  <Profile>Maintainer of the ClaudeClaw+ Unraid template. ClaudeClaw+ is a superset of upstream claudeclaw — Claude Code as a persistent personal AI assistant daemon — with an added governance layer, durable multi-step orchestration, persistent cross-session memory, and a hardened web UI.</Profile>
+  <WebPage>https://github.com/paulmeier/claudeclaw-plus-container-unraid</WebPage>
+</Maintainer>

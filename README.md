@@ -6,6 +6,7 @@
 
 [![Lint](https://github.com/paulmeier/claudeclaw-plus-container-unraid/actions/workflows/lint.yml/badge.svg)](https://github.com/paulmeier/claudeclaw-plus-container-unraid/actions/workflows/lint.yml)
 [![Release Please](https://github.com/paulmeier/claudeclaw-plus-container-unraid/actions/workflows/release-please.yml/badge.svg)](https://github.com/paulmeier/claudeclaw-plus-container-unraid/actions/workflows/release-please.yml)
+[![Release](https://img.shields.io/github/v/release/paulmeier/claudeclaw-plus-container-unraid)](https://github.com/paulmeier/claudeclaw-plus-container-unraid/releases)
 
 Unraid Community Applications template for [claudeclaw-plus-container](https://github.com/paulmeier/claudeclaw-plus-container) — a Docker container running [ClaudeClaw+](https://github.com/TerrysPOV/ClaudeClaw-Plus) (a superset of vanilla [claudeclaw](https://github.com/moazbuilds/claudeclaw) with added governance, durable multi-step orchestration, persistent cross-session memory, and a hardened web UI) as a persistent Claude Code personal assistant daemon.
 

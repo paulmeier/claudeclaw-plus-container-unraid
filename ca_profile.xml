@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Maintainer>
   <Icon>https://raw.githubusercontent.com/paulmeier/paulmeier/main/profile-icon.png</Icon>
-  <Profile>Maintainer of the ClaudeClaw+ Unraid template. ClaudeClaw+ is a superset of upstream claudeclaw — Claude Code as a persistent personal AI assistant daemon — with an added governance layer, durable multi-step orchestration, persistent cross-session memory, and a hardened web UI.</Profile>
-  <WebPage>https://github.com/paulmeier/claudeclaw-plus-container-unraid</WebPage>
+  <Profile>Greetings, space cadet. You've stumbled into paulmeier's maintainer terminal — same back-alley operation as before, only now with extra neon and a sign that may or may not be on fire. Ships claudeclaw-plus: claudeclaw bolted to a governance layer, durable multi-step orchestration, and persistent cross-session memory. For pilots who prefer their AI assistants well-mannered and harder to lose in hyperspace.</Profile>
+  <WebPage>https://github.com/paulmeier</WebPage>
 </Maintainer>

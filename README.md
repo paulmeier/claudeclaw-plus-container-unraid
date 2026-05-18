@@ -56,6 +56,24 @@ This opens an OAuth browser flow. Complete it once and credentials are saved per
 
 Edit `settings.json` in your app data directory (`/mnt/user/appdata/claudeclaw-plus/claudeclaw/settings.json`) to configure messaging bridges and other options. ClaudeClaw+ inherits the upstream `claudeclaw` settings schema and adds its own keys for governance, model routing, orchestration, and persistent memory — see [the ClaudeClaw+ docs](https://github.com/TerrysPOV/ClaudeClaw-Plus) for the Plus-specific reference.
 
+## Custom tooling (npm / pip packages)
+
+Some Claude Code skills shell out to CLI tools installed via `npm install -g <pkg>` or `pip install <pkg>`. The container's entrypoint automatically redirects both into the app data volume:
+
+| Manager | Where packages land                                                  | Persisted across image updates? |
+| ------- | -------------------------------------------------------------------- | ------------------------------- |
+| npm     | `/mnt/user/appdata/claudeclaw-plus/npm-global/` + `npm-cache/`       | Yes                             |
+| pip     | `/mnt/user/appdata/claudeclaw-plus/python-user/` + `pip-cache/`      | Yes                             |
+
+Install at runtime from an Unraid console (Docker → claudeclaw-plus → **Console**) or any Claude Code skill:
+
+```bash
+npm install -g cowsay
+pip install httpie
+```
+
+Binaries land on `PATH` automatically and survive `docker pull` / container recreation. See [the container repo's README](https://github.com/paulmeier/claudeclaw-plus-container#adding-npm-packages) for the full env-var reference and how to bake packages into a custom image if you'd rather pin them.
+
 ## Running side-by-side with vanilla `claudeclaw`
 
 Both containers can be installed on the same Unraid box. They use distinct container names (`claudeclaw` vs `claudeclaw-plus`), distinct default appdata paths (`/mnt/user/appdata/claudeclaw` vs `/mnt/user/appdata/claudeclaw-plus`), and each gets its own web dashboard. If you want them on the same host port externally, change one of the Web Dashboard Port mappings.

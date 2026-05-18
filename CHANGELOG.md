@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/paulmeier/claudeclaw-plus-container-unraid/compare/v1.0.0...v1.1.0) (2026-05-18)
+
+
+### Features
+
+* document npm and pip package persistence ([b8ebc9a](https://github.com/paulmeier/claudeclaw-plus-container-unraid/commit/b8ebc9a1178983079751c17f9feda8a10d4cc59b))
+* document npm and pip package persistence ([6d607ff](https://github.com/paulmeier/claudeclaw-plus-container-unraid/commit/6d607ffeafe527bfb0fe974913304a7409e35232))
+
 ## 1.0.0 (2026-05-17)
 
 

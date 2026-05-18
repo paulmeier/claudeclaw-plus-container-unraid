@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Maintainer>
   <Icon>https://raw.githubusercontent.com/paulmeier/paulmeier/main/profile-icon.png</Icon>
-  <Profile>Greetings, space cadet. You've stumbled into paulmeier's maintainer terminal — a low-rent operation wedged between a slime-tentacled megacorp and a malfunctioning vending machine on the back side of Xenon. paulmeier is a space container janitor by trade, mopping out leaky cargo holds and bolting otherwise reasonable software into the dim recesses of assorted Unraid mainframes. Sanity not included.</Profile>
+  <Profile>Greetings, space cadet. paulmeier is a space container janitor — mopping leaky cargo holds and bolting otherwise reasonable software into the dim recesses of Unraid mainframes. Sanity not included.</Profile>
   <WebPage>https://github.com/paulmeier</WebPage>
 </Maintainer>
